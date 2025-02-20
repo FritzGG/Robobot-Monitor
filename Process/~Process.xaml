@@ -82,9 +82,10 @@
       <AssemblyReference>UiPath.UIAutomationNext</AssemblyReference>
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>GlobalVariablesT1PNoYwrqg</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="496.8,1245.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="1103.2,1624.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="str_ClientName" />
       <Variable x:TypeArguments="x:String" Name="str_ClientURL" />
@@ -97,8 +98,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="496.8,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;##Process Starts##&quot;]" />
-    <ui:MultipleAssign DisplayName="Multiple Assign - Init Var" sap:VirtualizedContainerService.HintSize="496.8,180" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="496.8,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;##Process Starts##&quot;]" />
+    <ui:MultipleAssign DisplayName="Multiple Assign - Init Var" sap:VirtualizedContainerService.HintSize="496.8,212" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -128,12 +129,12 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="496.8,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Processing &quot;+str_ClientName]" />
-    <Switch x:TypeArguments="x:String" DisplayName="Switch Orch Type" Expression="[in_TransactionItem(&quot;OrchestratorType&quot;).ToString.ToLower]" sap:VirtualizedContainerService.HintSize="496.8,688" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="496.8,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Processing &quot;+str_ClientName]" />
+    <Switch x:TypeArguments="x:String" DisplayName="Switch Orch Type" Expression="[in_TransactionItem(&quot;OrchestratorType&quot;).ToString.ToLower]" sap:VirtualizedContainerService.HintSize="496.8,799.2" sap2010:WorkflowViewState.IdRef="Switch`1_2">
       <Switch.Default>
         <Throw DisplayName="Throw - Not Cloud" Exception="[New BusinessRuleException(&quot;The current tenant is OnPrem&quot;)]" sap:VirtualizedContainerService.HintSize="200,24.8" sap2010:WorkflowViewState.IdRef="Throw_1" />
       </Switch.Default>
-      <Sequence x:Key="cloud" sap:VirtualizedContainerService.HintSize="416,500" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Sequence x:Key="cloud" sap:VirtualizedContainerService.HintSize="416,579.2" sap2010:WorkflowViewState.IdRef="Sequence_4">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="dt_Folders" />
         </Sequence.Variables>
@@ -142,7 +143,7 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="368,113.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_CloudAuthentication.xaml">
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_CloudAuthentication - Invoke Workflow File (Process\Orchestrator\Orchestrator_CloudAuthentication.xaml)" sap:VirtualizedContainerService.HintSize="382.4,176" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_CloudAuthentication.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="x:String" x:Key="in_str_ClientName">[str_ClientName]</InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_str_OrchestratorHostName">[in_Config("AutomationCloudURL").ToString]</InArgument>
@@ -150,7 +151,7 @@
             <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">[str_TenantName]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="368,113.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetFolders.xaml">
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetFolders - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetFolders.xaml)" sap:VirtualizedContainerService.HintSize="382.4,176" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetFolders.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">[str_TenantName]</InArgument>
@@ -158,7 +159,7 @@
             <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Folders">[dt_Folders]</OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="368,113.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetJobs.xaml">
+        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetJobs - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetJobs.xaml)" sap:VirtualizedContainerService.HintSize="382.4,167.2" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetJobs.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_FilterDate">02/20/2025</InArgument>
@@ -168,6 +169,6 @@
         </ui:InvokeWorkflowFile>
       </Sequence>
     </Switch>
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="496.8,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;##Process Ends##&quot;]" />
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="496.8,165.6" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;##Process Ends##&quot;]" />
   </Sequence>
 </Activity>
