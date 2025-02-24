@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="FinalizateProcess" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:b="clr-namespace:Beecker_Platform;assembly=Beecker.Platform" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="FinalizateProcess" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
     <x:Property sap2010:Annotation.AnnotationText="Used during transitions between states to represent exceptions other than business exceptions." Name="in_SystemException" Type="InArgument(s:Exception)" />
@@ -16,7 +16,7 @@
   <sap:VirtualizedContainerService.HintSize>1790,4742</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>FinalizateProcess_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="40">
+    <scg:List x:TypeArguments="x:String" Capacity="80">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -57,6 +57,7 @@
       <x:String>Newtonsoft.Json</x:String>
       <x:String>System.Dynamic</x:String>
       <x:String>System.Collections.Specialized</x:String>
+      <x:String>System.Linq.Expressions</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -116,9 +117,10 @@
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities.ViewModels</AssemblyReference>
+      <AssemblyReference>System.Linq.Async</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Terminate all the configuration related to the process" DisplayName="FinalizateProcess" sap:VirtualizedContainerService.HintSize="706,4677" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Terminate all the configuration related to the process" DisplayName="FinalizateProcess" sap:VirtualizedContainerService.HintSize="1196.8,870.04" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
     </Sequence.Variables>
@@ -128,193 +130,33 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message (Finalizate Process)" sap:VirtualizedContainerService.HintSize="644,141" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Finalizating process...&quot;]" />
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke SendDefaultNotificationMail (FinalizateProcess)" sap:VirtualizedContainerService.HintSize="644,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Framework\SendDefaultNotificationMail.xaml">
+    <ui:LogMessage DisplayName="Log Message (Finalizate Process)" sap:VirtualizedContainerService.HintSize="449.6,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[&quot;Finalizating process...&quot;]" />
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke SendDefaultNotificationMail (FinalizateProcess)" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Framework\SendDefaultNotificationMail.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Subject">[in_Config("BotId").ToString+"-Notification Mail"]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_BodyPath">[in_Config("BodyMail_NoData").ToString]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <If Condition="[CBool(in_Config(&quot;UsePlatform&quot;))]" DisplayName="If Use Platform - Upload Transactions (FinalizateProcess)" sap:VirtualizedContainerService.HintSize="644,1091" sap2010:WorkflowViewState.IdRef="If_2">
+    <If Condition="[in_SystemException IsNot Nothing AndAlso (in_Config Is Nothing OrElse Convert.ToBoolean(in_Config(&quot;ShouldMarkJobAsFaulted&quot;)))]" DisplayName="If SystemException IsNot Nothing" sap:VirtualizedContainerService.HintSize="449.6,424.8" sap2010:WorkflowViewState.IdRef="If_7">
       <If.Then>
-        <ui:RetryScope DisplayName="Retry Scope - Upload Transactions" sap:VirtualizedContainerService.HintSize="492,909" sap2010:WorkflowViewState.IdRef="RetryScope_1">
-          <ui:RetryScope.ActivityBody>
-            <ActivityAction>
-              <Sequence DisplayName="Action - Upload Transaction" sap:VirtualizedContainerService.HintSize="450,609" sap2010:WorkflowViewState.IdRef="Sequence_2">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <b:Update_Transactions Response="{x:Null}" DisplayName="Update All Transactions" ExecutionID="[in_Config(&quot;PlatformExecutionID&quot;).ToString]" sap:VirtualizedContainerService.HintSize="388,345" Host="[in_Config(&quot;PlatformURL&quot;).ToString]" sap2010:WorkflowViewState.IdRef="Update_Transactions_1" Status="[StatusCode]" Token="[in_Config(&quot;PlatformToken&quot;).ToString]" TransactionSummaryDataTable="[in_dt_TransactionData]">
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </b:Update_Transactions>
-                <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke LoginIntoPlatform.xaml (FinalizateProcess/UploadTrx)" sap:VirtualizedContainerService.HintSize="388,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Framework\LoginIntoPlatform.xaml">
-                  <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="x:Int32" x:Key="in_StatusCode">[StatusCode]</InArgument>
-                    <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="io_Config">[in_Config]</InOutArgument>
-                  </ui:InvokeWorkflowFile.Arguments>
-                </ui:InvokeWorkflowFile>
-              </Sequence>
-            </ActivityAction>
-          </ui:RetryScope.ActivityBody>
-          <ui:RetryScope.Condition>
-            <ActivityFunc x:TypeArguments="x:Boolean">
-              <ui:IsMatch BuilderPattern="200" DisplayName="Is Match - Update Trx" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="IsMatch_1" Input="[StatusCode.ToString]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;LIT&quot;,&quot;OperationName&quot;:&quot;Literal&quot;,&quot;OperationValue&quot;:&quot;200&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="200" RegexOption="IgnoreCase, Compiled" />
-            </ActivityFunc>
-          </ui:RetryScope.Condition>
-        </ui:RetryScope>
-      </If.Then>
-      <If.Else>
-        <Sequence DisplayName="" sap2010:WorkflowViewState.IdRef="Sequence_7" />
-      </If.Else>
-    </If>
-    <If Condition="[in_SystemException IsNot Nothing AndAlso (in_Config Is Nothing OrElse Convert.ToBoolean(in_Config(&quot;ShouldMarkJobAsFaulted&quot;)))]" DisplayName="If SystemException IsNot Nothing" sap:VirtualizedContainerService.HintSize="644,3070" sap2010:WorkflowViewState.IdRef="If_1">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <Sequence DisplayName="Set run as Failed" sap:VirtualizedContainerService.HintSize="610,1775" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <Sequence DisplayName="Set Run as Failed" sap:VirtualizedContainerService.HintSize="416,173.6" sap2010:WorkflowViewState.IdRef="Sequence_10">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <If Condition="[CBool(in_Config(&quot;UsePlatform&quot;))]" DisplayName="If Use Platform - Set Run as Failed (FinalizateProcess)" sap:VirtualizedContainerService.HintSize="568,1557" sap2010:WorkflowViewState.IdRef="If_3">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <If.Then>
-              <Sequence DisplayName="Set run as failed on Platform" sap:VirtualizedContainerService.HintSize="534,1375" sap2010:WorkflowViewState.IdRef="Sequence_4">
-                <Sequence.Variables>
-                  <Variable x:TypeArguments="x:String" Name="TicketID" />
-                </Sequence.Variables>
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <If Condition="[CBool(in_Config(&quot;RasieFinalTicket&quot;))]" DisplayName="If RasieFinalTicket Enabled" sap:VirtualizedContainerService.HintSize="492,316" sap2010:WorkflowViewState.IdRef="If_6">
-                  <If.Then>
-                    <b:Raise_a_Ticket Response="{x:Null}" Status="{x:Null}" AMSAgentID="[Convert.ToInt64(in_Config(&quot;AMSAgentId&quot;))]" Description="[&quot;System exception at initialization: &quot; + in_SystemException.Message + &quot; at Source: &quot; + in_SystemException.Source]" DisplayName="Raise a Ticket to Freshdesk" sap:VirtualizedContainerService.HintSize="200,52" sap2010:WorkflowViewState.IdRef="Raise_a_Ticket_2" Password="X" Subject="[in_Config(&quot;BotId&quot;).ToString+&quot;-Automatic Ticket&quot;]" TicketID="[TicketID]" Token="[in_Config(&quot;FreshdeskToken&quot;).ToString]" UserEmail="[in_Config(&quot;BotMail&quot;).ToString]">
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                    </b:Raise_a_Ticket>
-                  </If.Then>
-                  <If.Else>
-                    <Assign DisplayName="Assign - TicketId" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_1">
-                      <Assign.To>
-                        <OutArgument x:TypeArguments="x:String">[TicketID]</OutArgument>
-                      </Assign.To>
-                      <Assign.Value>
-                        <InArgument x:TypeArguments="x:String">1234</InArgument>
-                      </Assign.Value>
-                    </Assign>
-                  </If.Else>
-                </If>
-                <ui:RetryScope DisplayName="Retry Scope - Set Run as Failed" sap:VirtualizedContainerService.HintSize="492,931" sap2010:WorkflowViewState.IdRef="RetryScope_2">
-                  <ui:RetryScope.ActivityBody>
-                    <ActivityAction>
-                      <Sequence DisplayName="Action - Set run as failed" sap:VirtualizedContainerService.HintSize="450,711" sap2010:WorkflowViewState.IdRef="Sequence_5">
-                        <sap:WorkflowViewStateService.ViewState>
-                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                          </scg:Dictionary>
-                        </sap:WorkflowViewStateService.ViewState>
-                        <b:Set_Execution_Status Response="{x:Null}" DisplayName="Set Execution Status as Failed" ExecutionDetails="[&quot;System exception at initialization: &quot; + in_SystemException.Message + &quot; at Source: &quot; + in_SystemException.Source]" ExecutionID="[in_Config(&quot;PlatformExecutionID&quot;).ToString]" ExecutionStatus="Failed" sap:VirtualizedContainerService.HintSize="388,447" Host="[in_Config(&quot;PlatformURL&quot;).ToString]" sap2010:WorkflowViewState.IdRef="Set_Execution_Status_1" Status="[StatusCode]" TicketID="[TicketID]" Token="[in_Config(&quot;PlatformToken&quot;).ToString]" />
-                        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke LoginIntoPlatform.xaml (FinalizateProcess/SetRunAsFailed)" sap:VirtualizedContainerService.HintSize="388,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Framework\LoginIntoPlatform.xaml">
-                          <ui:InvokeWorkflowFile.Arguments>
-                            <InArgument x:TypeArguments="x:Int32" x:Key="in_StatusCode">[StatusCode]</InArgument>
-                            <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="io_Config">[in_Config]</InOutArgument>
-                          </ui:InvokeWorkflowFile.Arguments>
-                        </ui:InvokeWorkflowFile>
-                      </Sequence>
-                    </ActivityAction>
-                  </ui:RetryScope.ActivityBody>
-                  <ui:RetryScope.Condition>
-                    <ActivityFunc x:TypeArguments="x:Boolean">
-                      <ui:IsMatch BuilderPattern="200" DisplayName="Is Match - Set run as Failed" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="IsMatch_3" Input="[StatusCode.ToString]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;LIT&quot;,&quot;OperationName&quot;:&quot;Literal&quot;,&quot;OperationValue&quot;:&quot;200&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="200" RegexOption="IgnoreCase, Compiled">
-                        <sap:WorkflowViewStateService.ViewState>
-                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                          </scg:Dictionary>
-                        </sap:WorkflowViewStateService.ViewState>
-                      </ui:IsMatch>
-                    </ActivityFunc>
-                  </ui:RetryScope.Condition>
-                </ui:RetryScope>
-              </Sequence>
-            </If.Then>
-            <If.Else>
-              <Sequence DisplayName="" sap2010:WorkflowViewState.IdRef="Sequence_8" />
-            </If.Else>
-          </If>
-          <TerminateWorkflow DisplayName="Terminate Main Workflow" Exception="[in_SystemException]" sap:VirtualizedContainerService.HintSize="568,90" sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1" />
+          <TerminateWorkflow DisplayName="Terminate Main Workflow" Exception="[in_SystemException]" sap:VirtualizedContainerService.HintSize="382.4,113.6" sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1" />
         </Sequence>
       </If.Then>
       <If.Else>
-        <If Condition="[CBool(in_Config(&quot;UsePlatform&quot;))]" DisplayName="If Use Platform - Set Run as Completed (FinalizateProcess)" sap:VirtualizedContainerService.HintSize="526,1113" sap2010:WorkflowViewState.IdRef="If_4">
+        <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="416,89.6" sap2010:WorkflowViewState.IdRef="Sequence_11">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <If.Then>
-            <ui:RetryScope DisplayName="Retry Scope - Set run as Completed" sap:VirtualizedContainerService.HintSize="492,931" sap2010:WorkflowViewState.IdRef="RetryScope_3">
-              <ui:RetryScope.ActivityBody>
-                <ActivityAction>
-                  <Sequence DisplayName="Action - Set run as Completed" sap:VirtualizedContainerService.HintSize="450,711" sap2010:WorkflowViewState.IdRef="Sequence_6">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <b:Set_Execution_Status ExecutionDetails="{x:Null}" Response="{x:Null}" TicketID="{x:Null}" DisplayName="Set Execution Status as Completed" ExecutionID="[in_Config(&quot;PlatformExecutionID&quot;).ToString]" ExecutionStatus="Completed" sap:VirtualizedContainerService.HintSize="388,447" Host="[in_Config(&quot;PlatformURL&quot;).ToString]" sap2010:WorkflowViewState.IdRef="Set_Execution_Status_3" Status="[StatusCode]" Token="[in_Config(&quot;PlatformToken&quot;).ToString]" />
-                    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke LoginIntoPlatform.xaml (FinalizateProcess/SetRunAsCompleted)" sap:VirtualizedContainerService.HintSize="388,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Framework\LoginIntoPlatform.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <InArgument x:TypeArguments="x:Int32" x:Key="in_StatusCode">[StatusCode]</InArgument>
-                        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="io_Config">[in_Config]</InOutArgument>
-                      </ui:InvokeWorkflowFile.Arguments>
-                    </ui:InvokeWorkflowFile>
-                  </Sequence>
-                </ActivityAction>
-              </ui:RetryScope.ActivityBody>
-              <ui:RetryScope.Condition>
-                <ActivityFunc x:TypeArguments="x:Boolean">
-                  <ui:IsMatch BuilderPattern="200" DisplayName="Is Match - Set run as Completed" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="IsMatch_5" Input="[StatusCode.ToString]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;LIT&quot;,&quot;OperationName&quot;:&quot;Literal&quot;,&quot;OperationValue&quot;:&quot;200&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="200" RegexOption="IgnoreCase, Compiled" />
-                </ActivityFunc>
-              </ui:RetryScope.Condition>
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-            </ui:RetryScope>
-          </If.Then>
-          <If.Else>
-            <Sequence DisplayName="" sap2010:WorkflowViewState.IdRef="Sequence_9" />
-          </If.Else>
-        </If>
+        </Sequence>
       </If.Else>
     </If>
   </Sequence>

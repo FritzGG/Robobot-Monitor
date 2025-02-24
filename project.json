@@ -4,7 +4,6 @@
   "description": "Felipe's Robotic Enterprise Framework using datatable and Platform acivities v23.4",
   "main": "Main.xaml",
   "dependencies": {
-    "Beecker.Platform": "[2.1.3]",
     "UiPath.Excel.Activities": "[2.20.2]",
     "UiPath.Mail.Activities": "[1.20.3]",
     "UiPath.System.Activities": "[23.4.3]",

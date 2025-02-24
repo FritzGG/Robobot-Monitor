@@ -21,7 +21,7 @@
       "Name": "in_TransactionDataPath",
       "DisplayName": "in_TransactionDataPath",
       "Category": null,
-      "Tooltip": "The excel file that contains the orchestrators to work with\r\n",
+      "Tooltip": "The excel file that contains the orchestrators to work with\n",
       "Placeholder": "Data\\TransactionData.xlsx",
       "Widget": null,
       "IsRequired": true,
