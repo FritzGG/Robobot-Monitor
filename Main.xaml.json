@@ -64,6 +64,18 @@
       "IsPrincipal": true,
       "ArgumentType": 0,
       "DataSourceItems": null
+    },
+    {
+      "Name": "in_StartTime",
+      "DisplayName": "in_StartTime",
+      "Category": null,
+      "Tooltip": "The start time were the bot will get the data (Integer between 0 an 24)",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
     }
   ]
 }
