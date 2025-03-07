@@ -1,0 +1,81 @@
+{
+  "DisplayName": "Main",
+  "Tooltip": null,
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_ConfigPath",
+      "DisplayName": "in_ConfigPath",
+      "Category": null,
+      "Tooltip": "The path where the config is located",
+      "Placeholder": "Data\\Config.xlsx",
+      "Widget": null,
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_TransactionDataPath",
+      "DisplayName": "in_TransactionDataPath",
+      "Category": null,
+      "Tooltip": "The excel file that contains the orchestrators to work with\n",
+      "Placeholder": "Data\\TransactionData.xlsx",
+      "Widget": null,
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_StartDate",
+      "DisplayName": "in_StartDate",
+      "Category": null,
+      "Tooltip": "The Start date for the jobs to gater, can't be null (YYYY-MM-DD)",
+      "Placeholder": "2025-02-21",
+      "Widget": null,
+      "IsRequired": true,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_EndDate",
+      "DisplayName": "in_EndDate",
+      "Category": null,
+      "Tooltip": "The End date for the jobs to gater, can be null (YYYY-MM-DD)",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_DataPath",
+      "DisplayName": "in_DataPath",
+      "Category": null,
+      "Tooltip": "The path where the outputs will be stored",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_StartTime",
+      "DisplayName": "in_StartTime",
+      "Category": null,
+      "Tooltip": "The start time were the bot will get the data (Integer between 0 an 24)",
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}
