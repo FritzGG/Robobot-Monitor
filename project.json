@@ -1,5 +1,5 @@
 {
-  "name": "Roboyo.MonitoringAutomation",
+  "name": "Roboyo.BotMonitor",
   "projectId": "7d19b4b2-e516-47ab-9c35-86ec944853af",
   "description": "Felipe's Robotic Enterprise Framework using datatable and Platform acivities v23.4",
   "main": "Main.xaml",
@@ -14,7 +14,7 @@
   "entitiesStores": [],
   "schemaVersion": "4.0",
   "studioVersion": "23.4.4.0",
-  "projectVersion": "1.0.0",
+  "projectVersion": "1.0.5",
   "runtimeOptions": {
     "autoDispose": false,
     "netFrameworkLazyLoading": false,
