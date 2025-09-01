@@ -2,7 +2,8 @@
   <x:Members>
     <x:Property Name="in_ClientURL" Type="InArgument(x:String)" />
     <x:Property Name="in_AccessToken" Type="InArgument(x:String)" />
-    <x:Property Name="out_dt_QueueItems" Type="OutArgument(sd:DataTable)" />
+    <x:Property Name="out_dt_QueueItems" Type="InOutArgument(sd:DataTable)" />
+    <x:Property Name="in_FolderId" Type="InArgument(x:String)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
@@ -124,7 +125,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="Orchestrator_GetJobs" sap:VirtualizedContainerService.HintSize="1180,1203.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Orchestrator_GetJobs" sap:VirtualizedContainerService.HintSize="1389.6000000000001,2284.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="str_Response" />
       <Variable x:TypeArguments="x:Int32" Name="int_StatusCode" />
@@ -153,7 +154,7 @@
         <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
       </ui:HttpClient.UrlSegments>
     </ui:HttpClient>
-    <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[int_StatusCode]" sap:VirtualizedContainerService.HintSize="523.2,562.4" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+    <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[int_StatusCode]" sap:VirtualizedContainerService.HintSize="523.2,1644" sap2010:WorkflowViewState.IdRef="Switch`1_1">
       <Switch.Default>
         <Sequence sap:VirtualizedContainerService.HintSize="416,348" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <sap:WorkflowViewStateService.ViewState>
@@ -165,7 +166,7 @@
           <Throw DisplayName="Throw - Not Cloud" Exception="[New BusinessRuleException(&quot;Something happend during authentication...&quot;)]" sap:VirtualizedContainerService.HintSize="382.4,113.6" sap2010:WorkflowViewState.IdRef="Throw_1" />
         </Sequence>
       </Switch.Default>
-      <Sequence x:Key="200" sap:VirtualizedContainerService.HintSize="483.2,1124" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Sequence x:Key="200" sap:VirtualizedContainerService.HintSize="483.2,1032" sap2010:WorkflowViewState.IdRef="Sequence_4">
         <Sequence.Variables>
           <Variable x:TypeArguments="njl:JObject" Name="jobj_Response" />
           <Variable x:TypeArguments="njl:JArray" Name="jArray_Queues" />
@@ -177,7 +178,6 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="449.6,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_5" Message="[&quot;Retrieving the jobs inside the tenant&quot;]" />
-        <ui:BuildDataTable DataTable="[out_dt_QueueItems]" DisplayName="Build Data Table" sap:VirtualizedContainerService.HintSize="449.6,92" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;Folder&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;QueueName&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;QueueId&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Total&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;New&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;InProgress&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Completed&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;SRE&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;BRE&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
         <ui:DeserializeJson x:TypeArguments="njl:JObject" JsonSample="{x:Null}" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="449.6,122.4" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_2" JsonObject="[jobj_Response]" JsonString="[str_Response]" />
         <ui:DeserializeJsonArray DisplayName="Deserialize JSON Array" sap:VirtualizedContainerService.HintSize="449.6,92" sap2010:WorkflowViewState.IdRef="DeserializeJsonArray_1" JsonArray="[jArray_Queues]" JsonString="[jobj_Response(&quot;value&quot;).ToString]" />
         <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="449.6,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Queues found: &quot;&amp;jArray_Queues.Count]" />

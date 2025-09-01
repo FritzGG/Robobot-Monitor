@@ -5,6 +5,8 @@
     <x:Property Name="out_AccessToken" Type="OutArgument(x:String)" />
     <x:Property Name="in_TenantName" Type="InArgument(x:String)" />
     <x:Property Name="in_AuthType" Type="InArgument(x:String)" />
+    <x:Property Name="in_OrchestratorType" Type="InArgument(x:String)" />
+    <x:Property Name="in_ClientURL" Type="InArgument(x:String)" />
   </x:Members>
   <this:Orchestrator_Authenticate.in_TenantName>
     <InArgument x:TypeArguments="x:String" />
@@ -114,7 +116,7 @@
       <AssemblyReference>NPOI</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Orchestrator_Authenticate" sap:VirtualizedContainerService.HintSize="1299.2,1663.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Orchestrator_Authenticate" sap:VirtualizedContainerService.HintSize="1389.6000000000001,2431.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="str_ClientId" />
       <Variable x:TypeArguments="ss:SecureString" Name="sstr_SecretId" />
@@ -130,7 +132,7 @@
     </sap:WorkflowViewStateService.ViewState>
     <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="496.8,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Message="[&quot;##Starting Orchestrator Authentication##&quot;]" />
     <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="496.8,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_2" Message="[&quot;Retreiving User Key and Client ID&quot;]" />
-    <ui:GetRobotCredential TimeoutMS="{x:Null}" AssetName="[in_str_ClientName+&quot;_ClientID&quot;]" CacheStrategy="None" DisplayName="Get Credential" FolderPath="luis.ramos@roboyo.mx's workspace" sap:VirtualizedContainerService.HintSize="496.8,175.2" sap2010:WorkflowViewState.IdRef="GetRobotCredential_1" Password="[sstr_SecretId]" Username="[str_ClientId]" />
+    <ui:GetRobotCredential TimeoutMS="{x:Null}" AssetName="[in_str_ClientName+&quot;_ClientID&quot;]" CacheStrategy="None" DisplayName="Get Credential" sap:VirtualizedContainerService.HintSize="496.8,175.2" sap2010:WorkflowViewState.IdRef="GetRobotCredential_1" Password="[sstr_SecretId]" Username="[str_ClientId]" />
     <Assign sap:VirtualizedContainerService.HintSize="496.8,113.6" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[str_SecretId]</OutArgument>
@@ -141,7 +143,7 @@
     </Assign>
     <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="496.8,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_3" Message="[&quot;Authenticating...&quot;]" />
     <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="496.8,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Trace" Message="[in_str_OrchestratorHostName]" />
-    <Switch x:TypeArguments="x:String" DisplayName="Switch" Expression="[in_AuthType.ToLower]" sap:VirtualizedContainerService.HintSize="496.8,314.4" sap2010:WorkflowViewState.IdRef="Switch`1_3">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch" Expression="[in_AuthType.ToLower]" sap:VirtualizedContainerService.HintSize="496.8,690.4" sap2010:WorkflowViewState.IdRef="Switch`1_3">
       <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" TimeoutMS="{x:Null}" Username="{x:Null}" x:Key="standard" AcceptFormat="JSON" AuthenticationType="None" BodyFormat="application/xml" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request - Standard" EnableSSLVerification="True" EndPoint="[in_str_OrchestratorHostName]" sap:VirtualizedContainerService.HintSize="204,71.2" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[str_Response]" StatusCode="[int_StatusCode]">
         <ui:HttpClient.Attachments>
           <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -161,27 +163,66 @@
           <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
         </ui:HttpClient.UrlSegments>
       </ui:HttpClient>
-      <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" TimeoutMS="{x:Null}" Username="{x:Null}" x:Key="app" AcceptFormat="JSON" AuthenticationType="None" Body="[&quot;grant_type=client_credentials&amp;client_id=&quot;+str_ClientId+&quot;&amp;client_secret=&quot;+str_SecretId+&quot;&amp;scope=OR.Default&quot;]" BodyFormat="application/x-www-form-urlencoded" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request - Auth App" EnableSSLVerification="True" EndPoint="[&quot;https://cloud.uipath.com/&quot;+in_TenantName+&quot;/identity_/connect/token&quot;]" sap:VirtualizedContainerService.HintSize="205.6,71.2" sap2010:WorkflowViewState.IdRef="HttpClient_2" Method="POST" Result="[str_Response]" StatusCode="[int_StatusCode]">
-        <ui:HttpClient.Attachments>
-          <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-        </ui:HttpClient.Attachments>
-        <ui:HttpClient.Cookies>
-          <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-        </ui:HttpClient.Cookies>
-        <ui:HttpClient.Headers>
-          <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-        </ui:HttpClient.Headers>
-        <ui:HttpClient.Parameters>
-          <InArgument x:TypeArguments="x:String" x:Key="grant_type">refresh_token</InArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="client_id">[str_ClientId]</InArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="refresh_token">[str_SecretId]</InArgument>
-        </ui:HttpClient.Parameters>
-        <ui:HttpClient.UrlSegments>
-          <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-        </ui:HttpClient.UrlSegments>
-      </ui:HttpClient>
+      <If x:Key="app" Condition="[in_OrchestratorType.ToLower.Contains(&quot;cloud&quot;)]" sap:VirtualizedContainerService.HintSize="449.6,447.2" sap2010:WorkflowViewState.IdRef="If_1">
+        <If.Then>
+          <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="416,154.4" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" TimeoutMS="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" AuthenticationType="None" Body="[&quot;grant_type=client_credentials&amp;client_id=&quot;+str_ClientId+&quot;&amp;client_secret=&quot;+str_SecretId+&quot;&amp;scope=OR.Default&quot;]" BodyFormat="application/x-www-form-urlencoded" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request - Auth App" EnableSSLVerification="True" EndPoint="https://cloud.uipath.com/identity_/connect/token" sap:VirtualizedContainerService.HintSize="382.4,94.4" sap2010:WorkflowViewState.IdRef="HttpClient_2" Method="POST" Result="[str_Response]" StatusCode="[int_StatusCode]">
+              <ui:HttpClient.Attachments>
+                <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              </ui:HttpClient.Attachments>
+              <ui:HttpClient.Cookies>
+                <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              </ui:HttpClient.Cookies>
+              <ui:HttpClient.Headers>
+                <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              </ui:HttpClient.Headers>
+              <ui:HttpClient.Parameters>
+                <InArgument x:TypeArguments="x:String" x:Key="grant_type">refresh_token</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="client_id">[str_ClientId]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="refresh_token">[str_SecretId]</InArgument>
+              </ui:HttpClient.Parameters>
+              <ui:HttpClient.UrlSegments>
+                <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              </ui:HttpClient.UrlSegments>
+            </ui:HttpClient>
+          </Sequence>
+        </If.Then>
+        <If.Else>
+          <Sequence DisplayName="Else" sap:VirtualizedContainerService.HintSize="416,154.4" sap2010:WorkflowViewState.IdRef="Sequence_5">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" FileAttachments="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseAttachment="{x:Null}" ResponseHeaders="{x:Null}" SecureClientCertificatePassword="{x:Null}" SecurePassword="{x:Null}" TimeoutMS="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" AuthenticationType="None" Body="[&quot;grant_type=client_credentials&amp;client_id=&quot;+str_ClientId+&quot;&amp;client_secret=&quot;+str_SecretId+&quot;&amp;scope=OR.Default&quot;]" BodyFormat="application/x-www-form-urlencoded" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request - Auth App OnPrem" EnableSSLVerification="True" EndPoint="[in_ClientURL+&quot;/identity/connect/token&quot;]" sap:VirtualizedContainerService.HintSize="382.4,94.4" sap2010:WorkflowViewState.IdRef="HttpClient_3" Method="POST" Result="[str_Response]" StatusCode="[int_StatusCode]">
+              <ui:HttpClient.Attachments>
+                <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              </ui:HttpClient.Attachments>
+              <ui:HttpClient.Cookies>
+                <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              </ui:HttpClient.Cookies>
+              <ui:HttpClient.Headers>
+                <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              </ui:HttpClient.Headers>
+              <ui:HttpClient.Parameters>
+                <InArgument x:TypeArguments="x:String" x:Key="grant_type">refresh_token</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="client_id">[str_ClientId]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="refresh_token">[str_SecretId]</InArgument>
+              </ui:HttpClient.Parameters>
+              <ui:HttpClient.UrlSegments>
+                <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              </ui:HttpClient.UrlSegments>
+            </ui:HttpClient>
+          </Sequence>
+        </If.Else>
+      </If>
     </Switch>
-    <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[int_StatusCode]" sap:VirtualizedContainerService.HintSize="496.8,173.6" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+    <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[int_StatusCode]" sap:VirtualizedContainerService.HintSize="496.8,565.6" sap2010:WorkflowViewState.IdRef="Switch`1_1">
       <Switch.Default>
         <Sequence sap:VirtualizedContainerService.HintSize="416,348" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <sap:WorkflowViewStateService.ViewState>
@@ -189,8 +230,8 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="382.4,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Warn" Message="[&quot;Something happen&quot;+Environment.NewLine+str_Response]" />
-          <Throw DisplayName="Throw - Not Cloud" Exception="[New BusinessRuleException(&quot;Something happend during authentication...&quot;)]" sap:VirtualizedContainerService.HintSize="382.4,113.6" sap2010:WorkflowViewState.IdRef="Throw_1" />
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="382.4,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Warn" Message="[&quot;Something happen&quot;+Environment.NewLine+&quot;Response: &quot;+str_Response]" />
+          <Throw DisplayName="Throw - Not Cloud" Exception="[New BusinessRuleException(&quot;Something happen&quot;+Environment.NewLine+&quot;Response: &quot;+str_Response)]" sap:VirtualizedContainerService.HintSize="382.4,113.6" sap2010:WorkflowViewState.IdRef="Throw_1" />
         </Sequence>
       </Switch.Default>
       <Sequence x:Key="200" sap:VirtualizedContainerService.HintSize="467.2,636" sap2010:WorkflowViewState.IdRef="Sequence_2">

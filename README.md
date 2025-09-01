@@ -1,6 +1,14 @@
 ### Documentation is included in the Documentation folder ###
 
 
+### Backlog ###
+
+1. agregar lo de altria
+2. agregar zona horaria en transaction data
+3. agregar parse a la zona horaria en process, queueitems y jobs
+4. agregar running en job summary
+5. agregar zona horaria en init para cambiar de zona horaria local o de trxdata a utc
+
 ### REFrameWork Template ###
 **Robotic Enterprise Framework**
 

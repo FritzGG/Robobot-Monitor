@@ -46,6 +46,7 @@
       <x:String>UiPath.Platform.ResourceHandling</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>System.Numerics</x:String>
+      <x:String>System.Globalization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -116,7 +117,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="1299.2,4993.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="1389.6000000000001,5084.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="str_ClientName" />
       <Variable x:TypeArguments="x:String" Name="str_ClientURL" />
@@ -138,8 +139,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="523.2,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;##Process Starts##&quot;]" />
-    <If Condition="[CBool(in_TransactionItem(&quot;Skip&quot;))]" sap:VirtualizedContainerService.HintSize="523.2,368.8" sap2010:WorkflowViewState.IdRef="If_1">
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="483.2,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;##Process Starts##&quot;]" />
+    <If Condition="[CBool(in_TransactionItem(&quot;Skip&quot;))]" sap:VirtualizedContainerService.HintSize="483.2,368.8" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
         <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="416,173.6" sap2010:WorkflowViewState.IdRef="Sequence_13">
           <sap:WorkflowViewStateService.ViewState>
@@ -161,7 +162,7 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:MultipleAssign DisplayName="Multiple Assign - Init Var" sap:VirtualizedContainerService.HintSize="523.2,288.8" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign DisplayName="Multiple Assign - Init Var" sap:VirtualizedContainerService.HintSize="483.2,288.8" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -215,113 +216,151 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <ui:CreateDirectory Output="{x:Null}" ContinueOnError="True" DisplayName="Creates the folder for DataPath" sap:VirtualizedContainerService.HintSize="523.2,112.8" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[in_Config(&quot;DataPath&quot;).toString+&quot;/&quot;+str_ClientName]" />
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="523.2,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Processing &quot;+str_ClientName]" />
-    <Switch x:TypeArguments="x:String" DisplayName="Switch Orch Type" Expression="[in_TransactionItem(&quot;OrchestratorType&quot;).ToString.ToLower]" sap:VirtualizedContainerService.HintSize="523.2,2149.6" sap2010:WorkflowViewState.IdRef="Switch`1_2">
-      <Switch.Default>
-        <Throw DisplayName="Throw - Not Cloud" Exception="[New BusinessRuleException(&quot;The current tenant is OnPrem&quot;)]" sap:VirtualizedContainerService.HintSize="334.4,90.4" sap2010:WorkflowViewState.IdRef="Throw_1" />
-      </Switch.Default>
-      <Sequence x:Key="cloud" sap:VirtualizedContainerService.HintSize="483.2,1795.2" sap2010:WorkflowViewState.IdRef="Sequence_4">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_CloudAuthentication - Invoke Workflow File (Process\Orchestrator\Orchestrator_CloudAuthentication.xaml)" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_CloudAuthentication.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:String" x:Key="in_str_ClientName">[str_ClientName]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_str_OrchestratorHostName">[in_Config("AutomationCloudURL").ToString]</InArgument>
-            <OutArgument x:TypeArguments="x:String" x:Key="out_AccessToken">[AccessToken]</OutArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">[str_TenantName]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_AuthType">[in_TransactionItem("AuthType").ToString]</InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetFolders - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetFolders.xaml)" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetFolders.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">[str_TenantName]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">[AccessToken]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Folders">[dt_Folders]</OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetJobs - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetJobs.xaml)" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetJobs.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">[AccessToken]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_FolderId" />
-            <InArgument x:TypeArguments="x:String" x:Key="in_StartDate">[str_StartDate]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_EndDate">[str_EndDate]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Jobs">[dt_Jobs]</OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetQueueDefinitions - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetQueueDefinitions.xaml)" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetQueueDefinitions.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">[AccessToken]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_QueueItems">[dt_QueueDefinition]</OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:BuildDataTable DataTable="[dt_QueueItems]" DisplayName="Build Data Table" sap:VirtualizedContainerService.HintSize="449.6,92" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;Folder&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;QueueName&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Reference&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Specific_x0020_Content&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Started&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Ended&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Status&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;ExceptionType&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Details&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
-        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="449.6,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="[UiPath.Core.Activities.LogLevel.Trace]" Message="[&quot;Working with &quot;+dt_QueueDefinition.Rows.Count.ToString+&quot; queues&quot;]" />
-        <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_Folders]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="449.6,345.6" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
-          <ui:ForEachRow.Body>
-            <ActivityAction x:TypeArguments="sd:DataRow">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CurrentFolder" />
-              </ActivityAction.Argument>
-              <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="416,196.8" sap2010:WorkflowViewState.IdRef="Sequence_11">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetQueuesItems - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetQueuesItems.xaml)" sap:VirtualizedContainerService.HintSize="382.4,136.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetQueuesItems.xaml">
-                  <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">[AccessToken]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">[CurrentFolder("FolderId").ToString]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_StartDate">[str_StartDate]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_EndDate">[str_EndDate]</InArgument>
-                    <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_QueueDefinition">[dt_QueueDefinition]</InArgument>
-                    <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_dt_QueueItems">[dt_QueueItems]</InOutArgument>
-                  </ui:InvokeWorkflowFile.Arguments>
-                </ui:InvokeWorkflowFile>
-              </Sequence>
-            </ActivityAction>
-          </ui:ForEachRow.Body>
-        </ui:ForEachRow>
-        <ui:RemoveDuplicateRows DataTable="[dt_QueueItems]" DisplayName="Remove Duplicate Rows - Queue Items" sap:VirtualizedContainerService.HintSize="449.6,112.8" sap2010:WorkflowViewState.IdRef="RemoveDuplicateRows_1" OutputDataTable="[dt_QueueItems]" />
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Process\Background\Datatable_QueuesSummary.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Process\Background\Datatable_QueuesSummary.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_QueueItems">[dt_QueueItems]</InArgument>
-            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_dt_QueueDefinition">[dt_QueueDefinition]</InOutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Process\Background\Datatable_JobsSummary.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Process\Background\Datatable_JobsSummary.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_Jobs">[dt_Jobs]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_JobsSummary">[dt_JobsSummary]</OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Process\Orchestrator\Orchestrator_GetMachines.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="449.6,136.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetMachines.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">
-              <VisualBasicValue x:TypeArguments="x:String" ExpressionText="str_ClientURL" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">
-              <VisualBasicValue x:TypeArguments="x:String" ExpressionText="AccessToken" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_FolderId" />
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Machines">
-              <VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="dt_Machines" />
-            </OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-      </Sequence>
-    </Switch>
-    <ui:CopyFile ContinueOnError="{x:Null}" Destination="[str_ReportName]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="523.2,187.2" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[in_Config(&quot;TemplateReportPath&quot;).ToString]" />
-    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="523.2,1272.8" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" InstanceCachePeriod="3000" WorkbookPath="[str_ReportName]">
+    <ui:CreateDirectory Output="{x:Null}" ContinueOnError="True" DisplayName="Creates the folder for DataPath" sap:VirtualizedContainerService.HintSize="483.2,112.8" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[in_Config(&quot;DataPath&quot;).toString+&quot;/&quot;+str_ClientName]" />
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="483.2,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Processing &quot;+str_ClientName]" />
+    <Sequence sap:VirtualizedContainerService.HintSize="483.2,2240.8" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_CloudAuthentication - Invoke Workflow File (Process\Orchestrator\Orchestrator_CloudAuthentication.xaml)" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_CloudAuthentication.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_str_ClientName">
+            <VisualBasicValue x:TypeArguments="x:String" ExpressionText="str_ClientName" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_str_OrchestratorHostName">
+            <VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;AutomationCloudURL&quot;).ToString" />
+          </InArgument>
+          <OutArgument x:TypeArguments="x:String" x:Key="out_AccessToken">
+            <VisualBasicReference x:TypeArguments="x:String" ExpressionText="AccessToken" />
+          </OutArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">
+            <VisualBasicValue x:TypeArguments="x:String" ExpressionText="str_TenantName" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_AuthType">
+            <VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_TransactionItem(&quot;AuthType&quot;).ToString" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorType">
+            <VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_TransactionItem(&quot;OrchestratorType&quot;).ToString" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">
+            <VisualBasicValue x:TypeArguments="x:String" ExpressionText="str_ClientURL" />
+          </InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetFolders - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetFolders.xaml)" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetFolders.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">[str_TenantName]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">[AccessToken]</InArgument>
+          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Folders">[dt_Folders]</OutArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+      <ui:BuildDataTable DataTable="[dt_Jobs]" DisplayName="Build Data Table - Jobs" sap:VirtualizedContainerService.HintSize="449.6,92" sap2010:WorkflowViewState.IdRef="BuildDataTable_2" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;Folder&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Process_x0020_Name&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Status&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Started&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Ended&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Source&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Notes&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
+      <ui:BuildDataTable DataTable="[dt_QueueDefinition]" DisplayName="Build Data Table - QueueDefinitions" sap:VirtualizedContainerService.HintSize="449.6,92" sap2010:WorkflowViewState.IdRef="BuildDataTable_3" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;Folder&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;QueueName&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;QueueId&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Total&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;New&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;InProgress&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Completed&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;SRE&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;BRE&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
+      <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_Folders]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="449.6,491.2" sap2010:WorkflowViewState.IdRef="ForEachRow_4">
+        <ui:ForEachRow.Body>
+          <ActivityAction x:TypeArguments="sd:DataRow">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CurrentFolder" />
+            </ActivityAction.Argument>
+            <Sequence sap:VirtualizedContainerService.HintSize="416,342.4" sap2010:WorkflowViewState.IdRef="Sequence_16">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetJobs - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetJobs.xaml)" sap:VirtualizedContainerService.HintSize="382.4,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetJobs.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="str_ClientURL" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="AccessToken" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="CurrentFolder(&quot;FolderId&quot;).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_StartDate">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="str_StartDate" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_EndDate">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="str_EndDate" />
+                  </InArgument>
+                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Jobs">
+                    <VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="dt_Jobs" />
+                  </InOutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetQueueDefinitions - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetQueueDefinitions.xaml)" sap:VirtualizedContainerService.HintSize="382.4,136.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetQueueDefinitions.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="str_ClientURL" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="AccessToken" />
+                  </InArgument>
+                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_QueueItems">
+                    <VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="dt_QueueDefinition" />
+                  </InOutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="CurrentFolder(&quot;FolderId&quot;).ToString" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+            </Sequence>
+          </ActivityAction>
+        </ui:ForEachRow.Body>
+      </ui:ForEachRow>
+      <ui:RemoveDuplicateRows DataTable="[dt_QueueDefinition]" DisplayName="Remove Duplicate Rows" sap:VirtualizedContainerService.HintSize="449.6,112.8" sap2010:WorkflowViewState.IdRef="RemoveDuplicateRows_2" OutputDataTable="[dt_QueueDefinition]" />
+      <ui:BuildDataTable DataTable="[dt_QueueItems]" DisplayName="Build Data Table - QueueItems" sap:VirtualizedContainerService.HintSize="449.6,92" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;Folder&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;QueueName&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Reference&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Specific_x0020_Content&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Started&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Ended&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Status&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;ExceptionType&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Details&quot; msdata:Caption=&quot;&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
+      <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="449.6,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="[UiPath.Core.Activities.LogLevel.Trace]" Message="[&quot;Working with &quot;+dt_QueueDefinition.Rows.Count.ToString+&quot; queues&quot;]" />
+      <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_Folders]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="449.6,262.4" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
+        <ui:ForEachRow.Body>
+          <ActivityAction x:TypeArguments="sd:DataRow">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CurrentFolder" />
+            </ActivityAction.Argument>
+            <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Orchestrator_GetQueuesItems - Invoke Workflow File (Process\Orchestrator\Orchestrator_GetQueuesItems.xaml)" sap:VirtualizedContainerService.HintSize="336,113.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetQueuesItems.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">[AccessToken]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">[CurrentFolder("FolderId").ToString]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_StartDate">[str_StartDate]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_EndDate">[str_EndDate]</InArgument>
+                <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_QueueDefinition">[dt_QueueDefinition]</InArgument>
+                <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_dt_QueueItems">[dt_QueueItems]</InOutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+          </ActivityAction>
+        </ui:ForEachRow.Body>
+      </ui:ForEachRow>
+      <ui:RemoveDuplicateRows DataTable="[dt_QueueItems]" DisplayName="Remove Duplicate Rows - Queue Items" sap:VirtualizedContainerService.HintSize="449.6,112.8" sap2010:WorkflowViewState.IdRef="RemoveDuplicateRows_1" OutputDataTable="[dt_QueueItems]" />
+      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Process\Background\Datatable_QueuesSummary.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Process\Background\Datatable_QueuesSummary.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_QueueItems">[dt_QueueItems]</InArgument>
+          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_dt_QueueDefinition">[dt_QueueDefinition]</InOutArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Process\Background\Datatable_JobsSummary.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="449.6,145.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Process\Background\Datatable_JobsSummary.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_Jobs">[dt_Jobs]</InArgument>
+          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_JobsSummary">[dt_JobsSummary]</OutArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Process\Orchestrator\Orchestrator_GetMachines.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="449.6,136.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Process\Orchestrator\Orchestrator_GetMachines.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_ClientURL">[str_ClientURL]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_AccessToken">[AccessToken]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_FolderId" />
+          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_dt_Machines">[dt_Machines]</OutArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+    </Sequence>
+    <ui:CopyFile ContinueOnError="{x:Null}" Destination="[str_ReportName]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="483.2,187.2" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[in_Config(&quot;TemplateReportPath&quot;).ToString]" />
+    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="483.2,1272.8" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" InstanceCachePeriod="3000" WorkbookPath="[str_ReportName]">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
@@ -339,13 +378,13 @@
             <ui:ExcelAppendRange DataTable="[dt_QueueItems]" DisplayName="Append Range" sap:VirtualizedContainerService.HintSize="382.4,120" sap2010:WorkflowViewState.IdRef="ExcelAppendRange_3" SheetName="Transactions" />
             <ui:ExcelAppendRange DataTable="[dt_QueueDefinition]" DisplayName="Append Range" sap:VirtualizedContainerService.HintSize="382.4,120" sap2010:WorkflowViewState.IdRef="ExcelAppendRange_4" SheetName="Queues" />
             <ui:ExcelWriteCell Cell="M2" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="382.4,120" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="Summary" Text="Start Date" />
-            <ui:ExcelWriteCell Cell="N2" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="382.4,120" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="Summary" Text="[str_StartDate]" />
+            <ui:ExcelWriteCell Cell="N2" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="382.4,120" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="Summary" Text="[TimeZoneInfo.ConvertTimeFromUtc(DateTime.Parse(str_StartDate,Nothing,System.Globalization.DateTimeStyles.AdjustToUniversal),TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id)).ToString(&quot;dd/MM/yyyy HH:mm:ss&quot;)]" />
             <ui:ExcelWriteCell Cell="M3" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="382.4,120" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_4" SheetName="Summary" Text="End Date" />
-            <ui:ExcelWriteCell Cell="N3" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="382.4,111.2" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="Summary" Text="[str_EndDate]" />
+            <ui:ExcelWriteCell Cell="N3" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="382.4,111.2" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="Summary" Text="[TimeZoneInfo.ConvertTimeFromUtc(DateTime.Parse(str_EndDate,Nothing,System.Globalization.DateTimeStyles.AdjustToUniversal),TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id)).ToString(&quot;dd/MM/yyyy HH:mm:ss&quot;)]" />
           </Sequence>
         </ActivityAction>
       </ui:ExcelApplicationScope.Body>
     </ui:ExcelApplicationScope>
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="523.2,165.6" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;##Process Ends##&quot;]" />
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="483.2,165.6" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;##Process Ends##&quot;]" />
   </Sequence>
 </Activity>

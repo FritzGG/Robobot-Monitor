@@ -56,6 +56,7 @@
       <x:String>UiPath.CSV.Activities</x:String>
       <x:String>UiPath.CSV</x:String>
       <x:String>System.Numerics</x:String>
+      <x:String>System.Globalization</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -121,6 +122,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.Collections.Specialized</AssemblyReference>
       <AssemblyReference>System.Runtime.Numerics</AssemblyReference>
+      <AssemblyReference>NPOI</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -128,7 +130,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="Orchestrator_GetJobs" sap:VirtualizedContainerService.HintSize="1180,3143.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Orchestrator_GetJobs" sap:VirtualizedContainerService.HintSize="1389.6000000000001,3002.4" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="str_Response" />
       <Variable x:TypeArguments="x:Int32" Name="int_StatusCode" />
@@ -167,7 +169,7 @@
         </ui:HttpClient.UrlSegments>
       </ui:HttpClient>
     </Sequence>
-    <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[int_StatusCode]" sap:VirtualizedContainerService.HintSize="523.2,2050.4" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+    <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[int_StatusCode]" sap:VirtualizedContainerService.HintSize="523.2,1909.6" sap2010:WorkflowViewState.IdRef="Switch`1_1">
       <Switch.Default>
         <Sequence sap:VirtualizedContainerService.HintSize="416,348" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <sap:WorkflowViewStateService.ViewState>
@@ -179,7 +181,7 @@
           <Throw DisplayName="Throw - Not Cloud" Exception="[New BusinessRuleException(&quot;Something happend during authentication...&quot;)]" sap:VirtualizedContainerService.HintSize="382.4,113.6" sap2010:WorkflowViewState.IdRef="Throw_1" />
         </Sequence>
       </Switch.Default>
-      <Sequence x:Key="200" sap:VirtualizedContainerService.HintSize="483.2,1226.4" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Sequence x:Key="200" sap:VirtualizedContainerService.HintSize="483.2,1277.6" sap2010:WorkflowViewState.IdRef="Sequence_4">
         <Sequence.Variables>
           <Variable x:TypeArguments="njl:JObject" Name="jobj_Response" />
           <Variable x:TypeArguments="njl:JArray" Name="jArray_qItems" />
@@ -194,7 +196,7 @@
         <ui:DeserializeJson x:TypeArguments="njl:JObject" JsonSample="{x:Null}" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="449.6,122.4" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_2" JsonObject="[jobj_Response]" JsonString="[str_Response]" />
         <ui:DeserializeJsonArray DisplayName="Deserialize JSON Array" sap:VirtualizedContainerService.HintSize="449.6,92" sap2010:WorkflowViewState.IdRef="DeserializeJsonArray_1" JsonArray="[jArray_qItems]" JsonString="[jobj_Response(&quot;value&quot;).ToString]" />
         <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="449.6,174.4" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Queue Items found: &quot;&amp;jArray_qItems.Count]" />
-        <ui:ForEach x:TypeArguments="njl:JToken" CurrentIndex="{x:Null}" DisplayName="For Each QueueItem" sap:VirtualizedContainerService.HintSize="449.6,603.2" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[jArray_qItems]">
+        <ui:ForEach x:TypeArguments="njl:JToken" CurrentIndex="{x:Null}" DisplayName="For Each QueueItem" sap:VirtualizedContainerService.HintSize="449.6,654.4" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[jArray_qItems]">
           <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="njl:JToken">
               <ActivityAction.Argument>
@@ -236,7 +238,7 @@
                     </scg:List>
                   </ui:FilterDataTable.SelectColumns>
                 </ui:FilterDataTable>
-                <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{&#xD;&#xA;QueueItem(&quot;OrganizationUnitFullyQualifiedName&quot;).ToString,&#xD;&#xA;dt_temp.Rows(0).Item(&quot;QueueName&quot;).ToString,&#xD;&#xA;QueueItem(&quot;Reference&quot;).ToString,&#xD;&#xA;QueueItem(&quot;SpecificData&quot;).ToString,&#xD;&#xA;QueueItem(&quot;StartProcessing&quot;).ToString,&#xD;&#xA;QueueItem(&quot;EndProcessing&quot;).ToString,&#xD;&#xA;QueueItem(&quot;Status&quot;).ToString,&#xD;&#xA;QueueItem(&quot;ProcessingExceptionType&quot;).ToString,&#xD;&#xA;QueueItem(&quot;ProcessingException&quot;).ToString&#xD;&#xA;}]" DataTable="[io_dt_QueueItems]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="382.4,211.2" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
+                <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{&#xD;&#xA;QueueItem(&quot;OrganizationUnitFullyQualifiedName&quot;).ToString,&#xD;&#xA;dt_temp.Rows(0).Item(&quot;QueueName&quot;).ToString,&#xD;&#xA;QueueItem(&quot;Reference&quot;).ToString,&#xD;&#xA;QueueItem(&quot;SpecificData&quot;).ToString,&#xD;&#xA;If(String.IsNullOrEmpty(QueueItem(&quot;StartProcessing&quot;).ToString),QueueItem(&quot;StartProcessing&quot;).ToString,TimeZoneInfo.ConvertTimeFromUtc(DateTime.Parse(QueueItem(&quot;StartProcessing&quot;).toString,Nothing,System.Globalization.DateTimeStyles.AdjustToUniversal),TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id)).ToString(&quot;dd/MM/yyyy HH:mm:ss&quot;)),&#xD;&#xA;If(String.IsNullOrEmpty(QueueItem(&quot;EndProcessing&quot;).ToString),QueueItem(&quot;EndProcessing&quot;).ToString,TimeZoneInfo.ConvertTimeFromUtc(DateTime.Parse(QueueItem(&quot;EndProcessing&quot;).toString,Nothing,System.Globalization.DateTimeStyles.AdjustToUniversal),TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id)).ToString(&quot;dd/MM/yyyy HH:mm:ss&quot;)),&#xD;&#xA;QueueItem(&quot;Status&quot;).ToString,&#xD;&#xA;QueueItem(&quot;ProcessingExceptionType&quot;).ToString,&#xD;&#xA;QueueItem(&quot;ProcessingException&quot;).ToString&#xD;&#xA;}]" DataTable="[io_dt_QueueItems]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="382.4,211.2" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
               </Sequence>
             </ActivityAction>
           </ui:ForEach.Body>

@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_ConfigPath="Data\Config.xlsx" this:Main.in_TransactionDataPath="Data\TransactionData.xlsx" this:Main.in_StartDate="2025-04-06" this:Main.in_EndDate="2025-04-07" this:Main.in_DataPath="C:\RPA\BotMonitor\Data" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_ConfigPath="Data\Config.xlsx" this:Main.in_TransactionDataPath="Data\TransactionData.xlsx" this:Main.in_StartDate="2025-09-01" this:Main.in_DataPath="C:\RPA\BotMonitor\Data" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="The path where the config is located" Name="in_ConfigPath" Type="InArgument(x:String)">
       <x:Property.Attributes>
@@ -143,7 +143,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <StateMachine InitialState="{x:Reference __ReferenceID3}" sap2010:Annotation.AnnotationText="[Process title]&#xA;[Process description]&#xA;[Additional information (e.g., author, contact information and applications involved and required external setup)]" DisplayName="General Business Process" sap:VirtualizedContainerService.HintSize="1316,539.304" sap2010:WorkflowViewState.IdRef="StateMachine_1">
+  <StateMachine InitialState="{x:Reference __ReferenceID3}" sap2010:Annotation.AnnotationText="[Process title]&#xA;[Process description]&#xA;[Additional information (e.g., author, contact information and applications involved and required external setup)]" DisplayName="General Business Process" sap:VirtualizedContainerService.HintSize="1406.4,851.2" sap2010:WorkflowViewState.IdRef="StateMachine_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -318,7 +318,7 @@
                           <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="403.2,213.6" sap2010:WorkflowViewState.IdRef="Catch`1_11">
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
@@ -599,7 +599,7 @@
                                                 <OutArgument x:TypeArguments="s:DateTime">[date_StartDate]</OutArgument>
                                               </ui:AssignOperation.To>
                                               <ui:AssignOperation.Value>
-                                                <InArgument x:TypeArguments="s:DateTime">[DateTime.Parse(in_StartDate).AddHours(6+in_StartTime)]</InArgument>
+                                                <InArgument x:TypeArguments="s:DateTime">[TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(in_StartDate),TimeZoneInfo.Local).AddHours(in_StartTime)]</InArgument>
                                               </ui:AssignOperation.Value>
                                             </ui:AssignOperation>
                                             <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
@@ -607,7 +607,7 @@
                                                 <OutArgument x:TypeArguments="s:DateTime">[date_EndDate]</OutArgument>
                                               </ui:AssignOperation.To>
                                               <ui:AssignOperation.Value>
-                                                <InArgument x:TypeArguments="s:DateTime">[DateTime.Parse(in_EndDate).AddHours(6)]</InArgument>
+                                                <InArgument x:TypeArguments="s:DateTime">[TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(in_EndDate),TimeZoneInfo.Local)]</InArgument>
                                               </ui:AssignOperation.Value>
                                             </ui:AssignOperation>
                                           </scg:List>
